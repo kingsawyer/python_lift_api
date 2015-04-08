@@ -1,5 +1,11 @@
 import json
-import urllib2
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+
+PYCON2015_EVENT_NAME = 'pycon2015'
 
 
 class Command(object):
@@ -33,7 +39,7 @@ class Command(object):
 class BoxLift(object):
     HOST = 'http://codelift.org'
 
-    def __init__(self, bot_name, plan, email, pycon_id):
+    def __init__(self, bot_name, plan, email, registration_id, event_name='', sandbox_mode=False):
         """An object that provides an interface to the Lift System.
 
         The state member is especially useful, it will be updated at init and whenever commands are sent.
@@ -47,21 +53,37 @@ class BoxLift(object):
         :type plan:
             `basestring`
         :param email:
-            A contact email. This helps us contact you if there are problems or to inform you
+            A contact email. This helps us contact you if there are problems or to inform you if you
             have one of the top 10 finishers. Prizes will be distributed in the Expo Hall on Sunday
             breakfast and lunch.
         :type email:
             `basestring`
-        :param pycon_id:
+        :param registration_id:
             Your Pycon 2015 registration number. Required for prize pickup.
-        :type pycon_id:
+        :type registration_id:
             `basestring`
+        :param event_name:
+            The name of the event being run. e.g. "pycon2015"
+        :type event_name:
+            `basestring`
+        :param sandbox_mode:
+            set to True to opt out of leader board, recent runs, and competition. Useful for testing and for event
+            organizers who want to play, but don't want to be on the leader board. Tokens will not expire, allowing
+            you to step through code slowly.
+        :type sandbox_mode:
+            `bool`
         """
-        self.bot_name = bot_name
-        self.plan = plan
         self.email = email
-        self.pycon_id = pycon_id
-        state = self._get_world_state()
+        initialization_data = {
+            'username': bot_name,
+            'plan': plan,
+            'email': email,
+            'eventname' : event_name,
+            'id': registration_id,
+            'sandbox': sandbox_mode,
+        }
+
+        state = self._get_world_state(initialization_data)
         self.game_id = state['id']
         self.token = state['token']
         self.status = state['status']
@@ -73,14 +95,9 @@ class BoxLift(object):
         print('building url: {}'.format(self.building_url))
         print('visualization url: {}'.format(self.visualization_url))
 
-    def _get_world_state(self):
+    def _get_world_state(self, initialization_data):
         """Initialize and gets the state of the world without sending any commands to advance the clock"""
-        data = {'username': self.bot_name, 'plan': self.plan,
-                'email': self.email,
-#                "sandbox": True,
-#                'id': self.pycon_id
-        }
-        state = self._post(self.url_root(), data)
+        state = self._post(self.url_root(), initialization_data)
         return state
 
     def send_commands(self, commands=None):
@@ -111,12 +128,8 @@ class BoxLift(object):
 
     def _post(self, url, data):
         """wrapper to encode/decode our data and the return value"""
-        req = urllib2.Request(url, json.dumps(data))
-        try:
-            response = urllib2.urlopen(req)
-        except Exception as ex:
-            print ex
-            raise
+        req = urllib2.Request(url, json.dumps(data).encode('utf-8'))
+        response = urllib2.urlopen(req)
         res = response.read()
         try:
             return json.loads(res)
