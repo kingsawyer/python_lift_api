@@ -1,2 +1,2 @@
 # python_lift_api
-A python API to the lift simulator
+A python API to the Lift simulator. You are free to use this for any purpose.
