@@ -43,8 +43,6 @@ class BoxLift(object):
     def __init__(self, bot_name, plan, email, registration_id, event_name='', sandbox_mode=False):
         """An object that provides an interface to the Lift System.
 
-        The state member is especially useful, it will be updated at init and whenever commands are sent.
-
         :param bot_name:
             The name for your entry, such as "Mega Elevator 3000"
         :type bot_name:
@@ -98,8 +96,7 @@ class BoxLift(object):
 
     def _get_world_state(self, initialization_data):
         """Initialize and gets the state of the world without sending any commands to advance the clock"""
-        state = self._post(self.url_root(), initialization_data)
-        return state
+        return self._post(self.url_root(), initialization_data)
 
     def send_commands(self, commands=None):
         """Send commands to advance the clock. Returns the new state of the world.
@@ -108,6 +105,10 @@ class BoxLift(object):
             list of commands to elevators. If no commands are sent the clock does not advance.
         :type commands:
             `iterable` of `Command`
+        :return:
+            The new state of the world
+        :rtype:
+            `dict`
         """
         commands = commands or []
         command_list = {}
@@ -120,10 +121,9 @@ class BoxLift(object):
             self.token = state['token']
         if 'requests' not in state:
             state['requests'] = []
-        for elevator_data in state['elevators']:
+        for elevator_data in state.get('elevators', []):
             if 'buttons_pressed' not in elevator_data:
                 elevator_data['buttons_pressed'] = []
-
 
         return state
 
