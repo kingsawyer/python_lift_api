@@ -1,4 +1,5 @@
 import json
+# This is to keep this to a minimum and work on Python 2.x and 3.x
 try:
     import urllib.request as urllib2
 except ImportError:
@@ -33,7 +34,7 @@ class Command(object):
         self.speed = speed
 
     def __str__(self):
-        return "set car {} (direction={}, speed={}".format(self.id, self.direction, self.speed)
+        return "set car {} (direction={}, speed={})".format(self.id, self.direction, self.speed)
 
 
 class BoxLift(object):
@@ -59,7 +60,7 @@ class BoxLift(object):
         :type email:
             `basestring`
         :param registration_id:
-            Your Pycon 2015 registration number. Required for prize pickup.
+            A unique id for the event. Required for prize pickup. e.g. your Pycon 2015 registration number
         :type registration_id:
             `basestring`
         :param event_name:
@@ -76,10 +77,10 @@ class BoxLift(object):
         self.email = email
         initialization_data = {
             'username': bot_name,
-            'plan': plan,
             'email': email,
-            'eventname' : event_name,
-            'id': registration_id,
+            'plan': plan,
+            'event_name' : event_name,
+            'event_id': registration_id,
             'sandbox': sandbox_mode,
         }
 
@@ -119,6 +120,10 @@ class BoxLift(object):
             self.token = state['token']
         if 'requests' not in state:
             state['requests'] = []
+        for elevator_data in state['elevators']:
+            if 'buttons_pressed' not in elevator_data:
+                elevator_data['buttons_pressed'] = []
+
 
         return state
 
