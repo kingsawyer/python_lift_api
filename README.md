@@ -1,7 +1,7 @@
 # python_lift_api
 A python API to the Lift simulator for the Box Lift competition at Pycon 2015. 
 
-REG_ID = '<the checkin number sent to you in email from Pycon 2015. It is printed with your barcode>'
+REG_ID = 'the checkin number sent to you in email from Pycon 2015. It is printed with your barcode'
 
 # Usage
     lift_api = BoxLift('MyAwesomeBot', plan='training_1', email='my_email@example.com',
