@@ -1,5 +1,5 @@
 import json
-# This is to keep this to a minimum and work on Python 2.x and 3.x
+# This is to keep this imports to a minimum and work on Python 2.x and 3.x
 try:
     import urllib.request as urllib2
 except ImportError:
@@ -136,6 +136,8 @@ class BoxLift(object):
         req = urllib2.Request(url, json.dumps(data).encode('utf-8'))
         response = urllib2.urlopen(req)
         res = response.read()
+        if isinstance(res, bytes):
+            res = res.decode('utf-8')
         try:
             return json.loads(res)
         except ValueError:
