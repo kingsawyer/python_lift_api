@@ -1,5 +1,6 @@
 import json
-# This is to keep this imports to a minimum and work on Python 2.x and 3.x
+# This is to keep this imports to a minimum and work on
+# Python 2.x and 3.x
 try:
     import urllib.request as urllib2
 except ImportError:
@@ -13,19 +14,22 @@ class Command(object):
     def __init__(self, id, direction, speed):
         """A command to an elevator
         :param id:
-            The elevator id.  This is returned in the state where all elevators are identified.
-            It is typically '0' for the first elevator, '1' for the next, etc.
+            The elevator id.  This is returned in the state where all
+            elevators are identified. It is typically '0' for the first
+            elevator, '1' for the next, etc.
         :type id:
             `basestring`
 
         :param direction:
-            1 to indicate up, -1 to indicate down. Even when stationary an elevator has a direction.
-            Passengers wishing to go up will not board an elevator with a down indicator.
+            1 to indicate up, -1 to indicate down. Even when stationary
+            an elevator has a direction. Passengers wishing to go up
+            will not board an elevator with a down indicator.
         :type direction:
             `int`
 
         :param speed:
-            0 to halt on a floor, 1 to move.  Sorry, no greater speeds allowed!
+            0 to halt on a floor, 1 to move.  Sorry, no greater speeds
+            allowed!
         :type speed:
             `int`
         """
@@ -34,13 +38,15 @@ class Command(object):
         self.speed = speed
 
     def __str__(self):
-        return "set car {} (direction={}, speed={})".format(self.id, self.direction, self.speed)
+        return "set car {} (direction={}, speed={})".format(
+            self.id, self.direction, self.speed)
 
 
 class BoxLift(object):
     HOST = 'http://codelift.org'
 
-    def __init__(self, bot_name, plan, email, registration_id, event_name='', sandbox_mode=False):
+    def __init__(self, bot_name, plan, email, registration_id,
+                 event_name='', sandbox_mode=False):
         """An object that provides an interface to the Lift System.
 
         :param bot_name:
@@ -52,13 +58,15 @@ class BoxLift(object):
         :type plan:
             `basestring`
         :param email:
-            A contact email. This helps us contact you if there are problems or to inform you if you
-            have one of the top 10 finishers. Prizes will be distributed in the Expo Hall on Sunday
-            breakfast and lunch.
+            A contact email. This helps us contact you if there are
+            problems or to inform you if you have one of the top 10
+            finishers. Prizes will be distributed in the Expo Hall on
+            Sunday breakfast and lunch.
         :type email:
             `basestring`
         :param registration_id:
-            A unique id for the event. Required for prize pickup. e.g. your Pycon 2015 registration number
+            A unique id for the event. Required for prize pickup.
+            e.g. your Pycon 2015 registration number.
         :type registration_id:
             `basestring`
         :param event_name:
@@ -66,9 +74,11 @@ class BoxLift(object):
         :type event_name:
             `basestring`
         :param sandbox_mode:
-            set to True to opt out of leader board, recent runs, and competition. Useful for testing and for event
-            organizers who want to play, but don't want to be on the leader board. Tokens will not expire, allowing
-            you to step through code slowly.
+            set to True to opt out of leader board, recent runs, and
+            competition. Useful for testing and for event organizers
+            who want to play, but don't want to be on the leader board.
+            Tokens will not expire, allowing you to step through code
+            slowly.
         :type sandbox_mode:
             `bool`
         """
@@ -77,7 +87,7 @@ class BoxLift(object):
             'username': bot_name,
             'email': email,
             'plan': plan,
-            'event_name' : event_name,
+            'event_name': event_name,
             'event_id': registration_id,
             'sandbox': sandbox_mode,
         }
@@ -95,14 +105,17 @@ class BoxLift(object):
         print('visualization url: {}'.format(self.visualization_url))
 
     def _get_world_state(self, initialization_data):
-        """Initialize and gets the state of the world without sending any commands to advance the clock"""
+        """Initialize and gets the state of the world without sending
+        any commands to advance the clock"""
         return self._post(self.url_root(), initialization_data)
 
     def send_commands(self, commands=None):
-        """Send commands to advance the clock. Returns the new state of the world.
+        """Send commands to advance the clock. Returns the new state of
+        the world.
 
         :param commands:
-            list of commands to elevators. If no commands are sent the clock does not advance.
+            list of commands to elevators. If no commands are sent the
+            clock does not advance.
         :type commands:
             `iterable` of `Command`
         :return:
@@ -113,7 +126,9 @@ class BoxLift(object):
         commands = commands or []
         command_list = {}
         for command in commands:
-            command_list[command.id] = {'speed': command.speed, 'direction': command.direction}
+            command_list[command.id] = {
+                'speed': command.speed, 'direction': command.direction
+            }
         data = {'token': self.token, 'commands': command_list}
         state = self._post(self.building_url, data)
         print("status: {}".format(state['status']))
@@ -143,5 +158,3 @@ class BoxLift(object):
         except ValueError:
             # probably empty response so no JSON to decode
             return res
-
-
