@@ -1,6 +1,13 @@
 # python_lift_api
 A python API to the Lift simulator for the Box Lift competition at Pycon 2015. 
 
+Everyone on the leaderboard gets a prize! |
+--------------------------------------------------
+Thanks so much for playing. We have 15 prizes and some of the entries were from the same person.
+Come by the Box Cluster Runner poster session and look for the Box Lift Prize pickup sign.
+
+and now back to your regular README
+
 REG_ID = 'the checkin number sent to you in email from Pycon 2015. It is printed with your barcode'
 
 # Usage
