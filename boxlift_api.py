@@ -93,6 +93,8 @@ class BoxLift(object):
         }
 
         state = self._get_world_state(initialization_data)
+        if state['status'] == 'error':
+            print(state['message'])
         self.game_id = state['id']
         self.token = state['token']
         self.status = state['status']
@@ -132,8 +134,12 @@ class BoxLift(object):
         data = {'token': self.token, 'commands': command_list}
         state = self._post(self.building_url, data)
         print("status: {}".format(state['status']))
+        if state['status'].lower() == 'error':
+            print("message: {}".format(state['message']))
         if 'token' in state:
             self.token = state['token']
+        else:
+            print('no token this turn')
         if 'requests' not in state:
             state['requests'] = []
         for elevator_data in state.get('elevators', []):
