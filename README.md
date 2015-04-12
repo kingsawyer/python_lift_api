@@ -4,6 +4,7 @@ A python API to the Lift simulator for the Box Lift competition at Pycon 2015.
 REG_ID = 'the checkin number sent to you in email from Pycon 2015. It is printed with your barcode'
 
 # Usage
+```python
     from boxlift_api import BoxLift, Command, PYCON2015_EVENT_NAME
     
     lift_api = BoxLift('MyAwesomeBot', plan='training_1', email='my_email@example.com',
@@ -13,3 +14,5 @@ REG_ID = 'the checkin number sent to you in email from Pycon 2015. It is printed
     while state['status'] != 'finished':
         commands = decide_on_commands()
         state = lift_api.send_commands(commands)
+    print('got a score of {}'.format(state['score']))
+```
