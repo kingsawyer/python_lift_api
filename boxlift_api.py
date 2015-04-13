@@ -87,10 +87,12 @@ class BoxLift(object):
             'username': bot_name,
             'email': email,
             'plan': plan,
-            'event_name': event_name,
-            'event_id': registration_id,
             'sandbox': sandbox_mode,
         }
+        if event_name:
+            initialization_data['event_name'] = event_name
+        if registration_id:
+            initialization_data['event_id'] = registration_id
 
         state = self._get_world_state(initialization_data)
         if state['status'] == 'error':
