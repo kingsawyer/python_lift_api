@@ -15,4 +15,5 @@ REG_ID = 'the checkin number sent to you in email from Pycon 2016. It is printed
         commands = decide_on_commands()
         state = lift_api.send_commands(commands)
     print('got a score of {}'.format(state['score']))
+    print('visit {} to see your solution in action.".format(state['visualization']))
 ```
