@@ -7,7 +7,7 @@ except ImportError:
     import urllib2
 
 
-PYCON2015_EVENT_NAME = 'pycon2015'
+PYCON2016_EVENT_NAME = 'pycon2016'
 
 
 class Command(object):
