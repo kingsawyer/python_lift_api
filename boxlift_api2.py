@@ -98,16 +98,10 @@ class BoxLift(object):
         if state['status'] == 'error':
             print(state['message'])
             exit()
-        self.game_id = state['id']
-        self.token = state['token']
         self.status = state['status']
-        self.building_url = state['building']
-        # fix building_url
-        self.building_url = self.url_root() + "/" + self.game_id
-        self.visualization_url = state['visualization']
         print(state['message'])
-        print('building url: {}'.format(self.building_url))
-        print('visualization url: {}'.format(self.visualization_url))
+        # print('building url: {}'.format(self.building_url))
+        # print('visualization url: {}'.format(self.visualization_url))
 
 
     def _get_world_state(self, initialization_data):
@@ -135,15 +129,14 @@ class BoxLift(object):
             command_list[command.id] = {
                 'speed': command.speed, 'direction': command.direction
             }
-        data = {'token': self.token, 'commands': command_list}
-        state = self._post(self.building_url, data)
-        print("status: {}".format(state['status']))
-        if state['status'].lower() == 'error':
+        data = {'commands': command_list}
+        state = self._post(data)
+        status = state['status'].lower()
+        print("status: {}".format(status))
+        if status == 'error':
             print("message: {}".format(state['message']))
-        if 'token' in state:
-            self.token = state['token']
-        else:
-            print('no token this turn')
+        elif status == 'finished':
+            print("finished! Score: {} Watch result at: {}".format(state['score'], state['visualization']))
         if 'requests' not in state:
             state['requests'] = []
         for elevator_data in state.get('elevators', []):
