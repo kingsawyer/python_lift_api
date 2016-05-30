@@ -1,5 +1,5 @@
 # python_lift_api
-A python API to the Lift simulator for the Box Lift competition at Pycon 2016. 
+A python API to the Lift simulator for the Box Lift competition at Pycon 2016. boxlift_api uses the http interface, boxlist_api2 uses the websocket interface.
 
 REG_ID = 'the checkin number sent to you in email from Pycon 2016. It is printed with your barcode'
 
