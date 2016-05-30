@@ -1,8 +1,9 @@
 import json
+from sys import exit
 from websocket import create_connection
 
 
-PYCON2016_EVENT_NAME = 'pycon2016'
+PYCON2016_EVENT_NAME = 'pycon2015'
 
 
 class Command(object):
@@ -96,6 +97,7 @@ class BoxLift(object):
         state = self._get_world_state(initialization_data)
         if state['status'] == 'error':
             print(state['message'])
+            exit()
         self.game_id = state['id']
         self.token = state['token']
         self.status = state['status']
