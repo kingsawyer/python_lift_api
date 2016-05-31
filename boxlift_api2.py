@@ -88,6 +88,7 @@ class BoxLift(object):
         if event_name:
             initialization_data['event_name'] = event_name
         if registration_id:
+            assert(isinstance(registration_id, basestring))
             initialization_data['event_id'] = registration_id
 
         self.websocket = create_connection('ws://codelift.org/v2/building')
