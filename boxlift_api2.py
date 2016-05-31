@@ -3,7 +3,7 @@ from sys import exit
 from websocket import create_connection
 
 
-PYCON2016_EVENT_NAME = 'pycon2015'
+PYCON2016_EVENT_NAME = 'pycon2016'
 
 
 class Command(object):
